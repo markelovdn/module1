@@ -11,9 +11,9 @@ class QueryBuilder
 
     public function getAll ($table) {
         $sql = "SELECT * FROM {$table}";
-        $statment = $this->pdo->prepare($sql);
-        $statment->execute();
-        return $statment->fetchAll(PDO::FETCH_ASSOC);
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function create($table, $data) {
@@ -21,7 +21,18 @@ class QueryBuilder
         $tags = ':'. implode(', :', array_keys($data));
 
         $sql = "INSERT INTO {$table}({$keys}) VALUES($tags)";
-        $statment = $this->pdo->prepare($sql);
-        $statment->execute($data);
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute($data);
+    }
+
+    public function getOne($table, $id) {
+        $sql = "SELECT * FROM post WHERE id=:id";
+
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
+
     }
 }
