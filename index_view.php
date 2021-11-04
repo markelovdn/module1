@@ -27,7 +27,7 @@
 <div class="container">
     <div class="col">
         <div class="col-md-8 offset-md-2">
-            <a href="#" class="btn btn-success">AddPost</a>
+            <a href="/create.php" class="btn btn-success">AddPost</a>
             <table class="table">
                 <thead>
                 <tr>

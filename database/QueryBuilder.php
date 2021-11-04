@@ -9,11 +9,19 @@ class QueryBuilder
         $this->pdo = $pdo;
     }
 
-    function getAll () {
-        $sql = "SELECT * FROM post";
+    public function getAll ($table) {
+        $sql = "SELECT * FROM {$table}";
         $statment = $this->pdo->prepare($sql);
         $statment->execute();
-        $posts = $statment->fetchAll(PDO::FETCH_ASSOC);
-        return $posts;
+        return $statment->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function create($table, $data) {
+        $keys = implode(', ', array_keys($data));
+        $tags = ':'. implode(', :', array_keys($data));
+
+        $sql = "INSERT INTO {$table}({$keys}) VALUES($tags)";
+        $statment = $this->pdo->prepare($sql);
+        $statment->execute($data);
     }
 }
