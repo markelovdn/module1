@@ -20,7 +20,25 @@ class QueryBuilder
         $keys = implode(', ', array_keys($data));
         $tags = ':'. implode(', :', array_keys($data));
 
-        $sql = "INSERT INTO {$table}({$keys}) VALUES($tags)";
+        $sql = "INSERT INTO {$table}({$keys}) VALUES ($tags)";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute($data);
+    }
+
+    public function update($table, $data, $id) {
+        $keys = array_keys($data);
+
+        $string = '';
+
+        foreach ($keys as $key) {
+            $string .= $key . '=:' . $key.',';
+        }
+
+        $keys = rtrim($string, ',');
+
+        $data['id'] = $id;
+
+        $sql = "UPDATE {$table} SET $keys WHERE id=:id";
         $statement = $this->pdo->prepare($sql);
         $statement->execute($data);
     }
@@ -33,6 +51,14 @@ class QueryBuilder
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result;
+    }
 
+    public function delete($table, $id) {
+        $sql = "DELETE FROM post WHERE id=:id";
+
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            'id'=>$id
+        ]);
     }
 }

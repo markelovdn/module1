@@ -1,3 +1,10 @@
+<?php
+include 'functions.php';
+$db = include 'database/start.php';
+
+$id = $_GET['id'];
+$post = $db->getOne('post', $id);
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -13,10 +20,10 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 offset-md-2">
-                <form action="store.php" method="post">
+                <form action="update.php?id=<?=$post['id']?>" method="post">
                 <div class="form-group">
                     <lable for="">Post title</lable>
-                    <input type="text" class="form-control" name="title">
+                    <input type="text" class="form-control" name="title" value="<?=$post['title']?>">
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-warning">Edit Post</button>
@@ -25,7 +32,5 @@
             </div>
         </div>
     </div>
-
-
 </body>
 </html>
